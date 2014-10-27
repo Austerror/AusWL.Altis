@@ -5,6 +5,7 @@
  */
 R3F_LOG_CFG_remorqueurs =
 [
+	"SUV_01_base_F",
 	"Offroad_01_base_F",
 	"Van_01_base_F",
 	"MRAP_01_base_F",
@@ -12,13 +13,19 @@ R3F_LOG_CFG_remorqueurs =
 	"MRAP_03_base_F",
 	"Truck_01_base_F",
 	"Truck_02_base_F",
+	"Truck_03_base_F",
 	"Wheeled_APC_F",
 	"Tank_F",
-//	"APC_Tracked_01_base_F", // For future weight system
-//	"APC_Tracked_02_base_F",
-//	"MBT_01_base_F",
-//	"MBT_02_base_F",
-	"Boat_Armed_01_base_F"
+	"Boat_Armed_01_base_F",
+	"RDS_Gaz24_Civ_03",
+	"RDS_Golf4_Civ_01",
+	"RDS_Hatchback_01_F",
+	"RDS_Ikarus_Civ_01",
+	"RDS_Ikarus_Civ_02",
+	"RDS_S1203_Civ_01",
+	"RDS_S1203_Civ_02",
+	"RDS_S1203_Civ_03",
+	"RDS_Octavia_Civ_01"
 ];
 
 /**
@@ -33,11 +40,21 @@ R3F_LOG_CFG_objets_remorquables =
 	"MRAP_01_base_F",
 	"MRAP_02_base_F",
 	"MRAP_03_base_F",
+	"UGV_01_base_F",
 	"SDV_01_base_F",
 	"Boat_Civil_01_base_F",
 	"Boat_Armed_01_base_F",
 	"Helicopter_Base_F",
-	"Plane_Base_F"
+	"Plane",
+	"RDS_Gaz24_Civ_03",
+	"RDS_Golf4_Civ_01",
+	"RDS_Hatchback_01_F",
+	"RDS_Ikarus_Civ_01",
+	"RDS_Ikarus_Civ_02",
+	"RDS_S1203_Civ_01",
+	"RDS_S1203_Civ_02",
+	"RDS_S1203_Civ_03",
+	"RDS_Octavia_Civ_01"
 ];
 
 /****** LIFT WITH VEHICLE  ******/
@@ -62,6 +79,7 @@ R3F_LOG_CFG_objets_heliportables =
 	"MRAP_01_base_F",
 	"MRAP_02_base_F",
 	"MRAP_03_base_F",
+	"UGV_01_base_F",
 	"SDV_01_base_F",
 	"Boat_Civil_01_base_F",
 	"Boat_Armed_01_base_F"
@@ -78,6 +96,7 @@ R3F_LOG_CFG_objets_heliportables =
 R3F_LOG_CFG_transporteurs =
 [
 	["Quadbike_01_base_F", 5],
+	["UGV_01_base_F", 10],
 	["Hatchback_01_base_F", 10],
 	["SUV_01_base_F", 20],
 	["Offroad_01_base_F", 30],
@@ -93,10 +112,12 @@ R3F_LOG_CFG_transporteurs =
 	["Boat_Armed_01_base_F", 20],
 	["Heli_Light_01_base_F", 10],
 	["Heli_Light_02_base_F", 20],
+	["I_Heli_light_03_base_F", 20],
 	["Heli_Transport_01_base_F", 25],
 	["Heli_Transport_02_base_F", 30],
 	["Heli_Attack_01_base_F", 10],
-	["Heli_Attack_02_base_F", 20]
+	["Heli_Attack_02_base_F", 20],
+	["CSJ_GyroC", 5]
 ];
 
  
@@ -151,7 +172,8 @@ R3F_LOG_CFG_objets_transportables =
 	["Land_Shoot_House_Wall_F", 3],
 	["Land_Stone_8m_F", 5],
 	["Land_ToiletBox_F", 2],
-	["Land_WaterBarrel_F", 2]
+	["Land_WaterBarrel_F", 2],
+	["CSJ_GyroC", 15]
 ];
 
 /****** MOVABLE-BY-PLAYER OBJECTS / OBJETS DEPLACABLES PAR LE JOUEUR ******/
@@ -207,5 +229,6 @@ R3F_LOG_CFG_objets_deplacables =
 	"Land_Shoot_House_Wall_F",
 	"Land_Stone_8m_F",
 	"Land_ToiletBox_F",
-	"Land_WaterBarrel_F"
+	"Land_WaterBarrel_F",
+	"CSJ_GyroC"
 ];

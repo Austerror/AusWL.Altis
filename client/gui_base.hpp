@@ -95,6 +95,17 @@
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
+
+class RscProgressBar {
+	access = 0;
+	type = CT_PROGRESS;
+	style = ST_HORIZONTAL;
+	colorFrame[] = {0,0,0,1};
+	colorBar[] = {0,0,0,0.5};
+	shadow = 2;
+	texture = "\A3\ui_f\data\GUI\RscCommon\RscShortcutButton\normal_ca.paa";
+};
+
 class RscText
 {
 	access = 0;
@@ -288,7 +299,7 @@ class RscCombo
 		1
 	};
 	maxHistoryDelay = 1;
-	class ScrollBar
+	class ComboScrollBar
 	{
 		color[] = 
 		{
@@ -428,7 +439,7 @@ class RscListBox
 	};
 	arrowEmpty = "#(argb,8,8,3)color(1,1,1,1)";
 	arrowFull = "#(argb,8,8,3)color(1,1,1,1)";
-	class ScrollBar
+	class ListScrollBar
 	{
 		color[] = 
 		{
@@ -624,6 +635,13 @@ class RscShortcutButton
 		0.95,
 		1
 	};
+	colorFocused[] = 
+	{
+		1,
+		1,
+		1,
+		1
+	};
 	colorDisabled[] = 
 	{
 		1,
@@ -643,6 +661,13 @@ class RscShortcutButton
 		1,
 		1,
 		1,
+		1
+	};
+	colorBackgroundFocused[] = 
+	{
+		"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.69])",
+		"(profilenamespace getvariable ['GUI_BCG_RGB_G',0.75])",
+		"(profilenamespace getvariable ['GUI_BCG_RGB_B',0.5])",
 		1
 	};
 	soundEnter[] = 

@@ -59,7 +59,16 @@ while{true}do{
 						LV_AI_indeGroups = LV_AI_indeGroups - [_wGroup];
 					};
 				};
-				{ deleteVehicle _x }forEach units _wGroup;
+				{
+					_wVehicle = objNull;
+					if (vehicle _x != _x) then {
+						_wVehicle = vehicle _x;
+					};
+					deleteVehicle _x;
+				}forEach units _wGroup;
+				if (!isNull _wVehicle) then {
+					deleteVehicle _wVehicle;
+				};
 			};
 		};
 		sleep 1;

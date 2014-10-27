@@ -6,18 +6,30 @@
 
 if (!isServer) exitWith {};
 
-private "_counter";
-_counter = 0;
-
+private ["_count", "_position", "_marker", "_numToSpawn", "_spawnMarkers", "_markerUsed"];
+_numToSpawn = 0;
+_count = 0;
+_numToSpawn = maxBoatSpawn - objectCountBoats;
+_spawnMarkers = [];
+currentStaticBoats = [];
+_marker = "boatSpawn_1";
 {
 	if (["boatSpawn_", _x] call fn_findString == 0) then
 	{
-		if (random 1 < 0.75) then // 75% chance spawning
-		{
-			[markerPos _x] call boatCreation;
-			_counter = _counter + 1;
-		};
+		_spawnMarkers = _spawnMarkers + [_x];
 	};
 } forEach allMapMarkers;
+diag_log format["WASTELAND SERVER - Boat Markers = %1", _spawnMarkers];
+while {_count <= _numToSpawn} do {
+	_marker = _spawnMarkers call BIS_fnc_selectRandom;
+	_markerUsed = _marker in currentStaticBoats;
+	if (!_markerUsed) then // marker hasn't spawned a heli.
+	{
+		_position = markerPos _marker;
+		[_position] call boatCreation;
+		currentStaticBoats set [count currentStaticBoats, _marker];
+		_count = _count + 1;
+	};
+};
 
-diag_log format["WASTELAND SERVER - %1 Boats Spawned",_counter];
+diag_log format["WASTELAND SERVER - %1 Boats Spawned",_count];

@@ -136,7 +136,7 @@ switch (_rn) do
 	}; 
 	default {
 		// this shouldnt happen but just to be sure..
-		diag_log format["WASTELAND SERVER - WARNING! %1 encountered an error selecting routes - defaulting to route 1", _missionType];
+		//diag_log format["WASTELAND SERVER - WARNING! %1 encountered an error selecting routes - defaulting to route 1", _missionType];
 		// route 1
 		// starting positions for this route
 		_starts = 
@@ -169,7 +169,7 @@ switch (_rn) do
 	}; 
 }; 
 
-_group = createGroup east;
+_group = createGroup civilian;
 
 _createVehicle = {
     private ["_type","_position","_direction","_group","_vehicle","_soldier"];
@@ -198,7 +198,7 @@ _createVehicle = {
         _soldier moveInTurret [_vehicle, [0]];
     };
     _vehicle setVehicleLock "LOCKED";  // prevents players from getting into the vehicle while the AI are still owning it
-	_vehicle spawn cleanVehicleWreck;  // courtesy of AgentREV sets cleanup on the mission vehicles once wrecked :)
+	// _vehicle spawn cleanVehicleWreck;  // courtesy of AgentREV sets cleanup on the mission vehicles once wrecked :)
     _vehicle
 };
 

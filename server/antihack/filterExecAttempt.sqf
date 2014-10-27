@@ -32,6 +32,7 @@ if (_packetName == "BIS_fnc_MP_packet") then
 		forEach
 		[
 			"client\functions\defineServerRules.sqf",
+			"territory\client\updateTerritoryMarkers.sqf",
 			"initPlayerServer.sqf"
 		];
 	};
@@ -53,7 +54,8 @@ if (_packetName == "BIS_fnc_MP_packet") then
 		"BIS_fnc_showNotification",
 		"BIS_fnc_taskSetState",
 		"BIS_fnc_tridentHandleDamage",
-		"BIS_fnc_tridentHandleDamage_server"
+		"BIS_fnc_tridentHandleDamage_server",
+		"JTS_FNC_SENT" // PM Compact by JTS
 	];
 
 	if (_allowedFile || _allowedFunction) then
@@ -64,6 +66,6 @@ if (_packetName == "BIS_fnc_MP_packet") then
 	{
 		_arguments = [_values, 0] call BIS_fnc_removeIndex;
 		_code = _values select 0;
-		diag_log format ["ANTI-HACK 0.8.0: Blocked remote execution: arguments=%1 code=%2", _arguments, str _code];
+		//diag_log format ["ANTI-HACK 0.8.0: Blocked remote execution: arguments=%1 code=%2", _arguments, str _code];
 	};
 };

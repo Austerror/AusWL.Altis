@@ -27,7 +27,7 @@ if (A3W_missionsDifficulty == 1) then {
 } else {
 	_helipick = ["O_Heli_Light_02_F","B_Heli_Transport_01_F","B_Heli_Light_01_armed_F","B_Heli_Transport_01_camo_F"] call BIS_fnc_selectRandom;
 };
-_groupsm = createGroup east;
+_groupsm = createGroup civilian;
 
 _createVehicle = {
     private ["_type","_position","_direction","_groupsm","_vehicle","_soldier"];
@@ -72,7 +72,7 @@ _createVehicle = {
 	};
 	// lock the vehicle untill the mission is finished and initialize cleanup on it
     _vehicle setVehicleLock "LOCKED";
-	_vehicle spawn cleanVehicleWreck;
+	// _vehicle spawn cleanVehicleWreck;
     _vehicle
 };
 

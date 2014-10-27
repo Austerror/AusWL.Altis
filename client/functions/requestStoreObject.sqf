@@ -2,14 +2,17 @@
 //	@file Name: requestStoreObject.sqf
 //	@file Author: AgentRev
 //	@file Created: 24/10/2012 18:32
-//	@file Args: 
 
-// Must only be called in buyItems.sqf or buyGuns.sqf
+// Must only be called in buyItems.sqf, buyGuns.sqf, or buyVehicles.sqf
+
+#define OBJECT_PURCHASE_TIMEOUT 15
+#define OBJECT_PURCHASE_POST_TIMEOUT 60
 
 [[player, _class, currentOwnerName, _requestKey], "spawnStoreObject", false, false] call TPG_fnc_MP;
 
-private "_requestTime";
-_requestTime = time;
+private ["_requestTimeout", "_object"];
+
+_requestTimeout = time + OBJECT_PURCHASE_TIMEOUT;
 hint "Awaiting server response...";
 
 [] spawn
@@ -18,21 +21,30 @@ hint "Awaiting server response...";
 	storePurchaseHandle = nil; // To allow purchasing more stuff in the meanwhile
 };
 
-waitUntil {!isNil _requestKey || {time >= _requestTime + 15}}; // 15s timeout
+while {isNil "_object" && {time < _requestTimeout}} do
+{
+	sleep 0.1;
+	_object = player getVariable _requestKey;
+};
 
-if (isNil _requestKey || {isNull objectFromNetId (missionNamespace getVariable _requestKey)}) then
+if (isNil "_object" || {isNull objectFromNetId _object}) then
 {
 	_requestKey spawn // If the object somehow spawns after the timeout, delete it
 	{
 		private ["_requestKey", "_postTimeout", "_object"];
 		_requestKey = _this;
-		_postTimeout = time;
-		waitUntil {!isNil _requestKey || {time >= _postTimeout + 60}}; // 60s post-timeout
+		_postTimeout = time + OBJECT_PURCHASE_POST_TIMEOUT;
 		
-		if (!isNil _requestKey) then
+		while {isNil "_object" && {time < _postTimeout}} do
 		{
-			deleteVehicle objectFromNetId (missionNamespace getVariable _requestKey);
-			missionNamespace setVariable [_requestKey, nil];
+			sleep 0.1;
+			_object = player getVariable _requestKey;
+		};
+		
+		if (!isNil "_object") then
+		{
+			deleteVehicle objectFromNetId _object;
+			player setVariable [_requestKey, nil, true];
 		};
 	};
 	
@@ -41,4 +53,6 @@ if (isNil _requestKey || {isNull objectFromNetId (missionNamespace getVariable _
 else
 {
 	[_itemText] call _showItemSpawnedOutsideMessage;
+	missionNamespace setVariable [_requestKey, _object];
+	player setVariable [_requestKey, nil, true];
 };

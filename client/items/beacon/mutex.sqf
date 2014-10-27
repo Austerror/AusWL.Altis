@@ -2,7 +2,7 @@
 #define MUTEX_LOCK_OR_FAIL \
 	if mutexScriptInProgress exitWith {hint ERR_MUTEX_LOCKED;}; \
     mutexScriptInProgress = true;
-#define MUTEX_UNLOCK mutexScriptInProgress = false;
+#define MUTEX_UNLOCK mutexScriptInProgress = false; doCancelAction = false
 
 /* IMPORTANT
  * 

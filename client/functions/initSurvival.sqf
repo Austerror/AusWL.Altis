@@ -6,8 +6,8 @@
 
 #define TIME_DELTA 1 //seconds between each "check"
 #define HEALTH_TIME (60*5) //seconds till death
-#define HUNGER_TIME (60*120) //seconds till starving
-#define THIRST_TIME (60*110) //seconds till dehydrated
+#define HUNGER_TIME (60*180) //seconds till starving
+#define THIRST_TIME (60*150) //seconds till dehydrated
 #define HEALTH_DELTA TIME_DELTA*(100/HEALTH_TIME)/100
 #define HUNGER_DELTA TIME_DELTA*(100/HUNGER_TIME)
 #define THIRST_DELTA TIME_DELTA*(100/THIRST_TIME)
@@ -28,12 +28,10 @@ if not(isNil "mf_survival_handle1") then {terminate mf_survival_handle1};
 mf_survival_handle1 = [] spawn {
 	_decrementHunger = {
 		if (hungerLevel > 0) then {hungerLevel = hungerLevel - HUNGER_DELTA };
-		player setVariable ["hungerLevel", hungerLevel, true];
 	};
 
 	_decrementThirst = {
 		if (thirstLevel > 0) then {thirstLevel = thirstLevel - THIRST_DELTA};
-		player setVariable ["thirstLevel", thirstLevel, true];
 	};
 
 	while {true} do {
@@ -53,9 +51,14 @@ mf_survival_handle1 = [] spawn {
 				player setDamage _health;
 			};
 		};
-		if ((hungerLevel > 90) && (thirstLevel > 90) && ((damage player) <= .75) && ((damage player) > 0)) then {
+		if ((hungerLevel > 80) && (thirstLevel > 80) && ((damage player) <= .75) && ((damage player) > 0)) then {
 			_health = (damage player) - (HEALTH_DELTA / 2);
 			player setDamage _health;
+		};
+		if (damage player > 0.5) then {
+			player enableFatigue true;
+		} else {
+			player enableFatigue false;
 		};
 	};
 };

@@ -9,8 +9,7 @@ _grpId = if (count _this > 3) then { _this select 3;} else {nil};
 _BLUmen = ["B_diver_F","B_diver_exp_F","B_diver_TL_F"];
 _OPFmen = ["O_diver_F","O_diver_exp_F","O_diver_TL_F"];
 _INDmen = ["I_diver_F","I_diver_exp_F","I_diver_TL_F"];
-
-_men = [];
+_men = ["C_man_polo_1_F","C_man_polo_2_F","C_man_polo_3_F","C_man_polo_4_F","C_man_polo_5_F"];
 if(typeName _size == "ARRAY")then{
 	_amount = ((random (_size select 0)) + (_size select 1));
 }else{
@@ -19,19 +18,16 @@ if(typeName _size == "ARRAY")then{
 
 switch(_side)do{
 	case 0:{
-		_men = _BLUmen;
-		_BLUhq = createCenter west;
-		_BLUgrp = createGroup west;
+		_BLUhq = createCenter resistance;
+		_BLUgrp = createGroup resistance;
 		_grp = _BLUgrp;
 	};
 	case 1:{
-		_men = _OPFmen;
 		_OPFhq = createCenter east;
 		_OPFgrp = createGroup east;
 		_grp = _OPFgrp;
 	};
 	case 2:{
-		_men = _INDmen;
 		_INDhq = createCenter resistance;
 		_INDgrp = createGroup resistance;
 		_grp = _INDgrp;

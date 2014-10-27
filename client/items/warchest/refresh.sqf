@@ -8,6 +8,7 @@ _funds = -1;
 switch (playerSide) do {
     case east : {_funds = pvar_warchest_funds_east};
     case west : {_funds = pvar_warchest_funds_west};
+	case civilian : {_funds = pvar_warchest_funds_civ};
     default {hint "WarchestRefrest - This Shouldnt Happen"};
 };
 

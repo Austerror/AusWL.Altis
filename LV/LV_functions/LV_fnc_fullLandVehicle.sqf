@@ -4,36 +4,39 @@ private ["_BLUhq","_BLUgrp","_veh","_grp","_OPFhq","_OPFgrp","_INDhq","_INDgrp",
 _pos = _this select 0;
 _side = _this select 1;
 
-_BLUveh = ["B_MRAP_01_F","B_MRAP_01_hmg_F","B_MRAP_01_gmg_F","B_Quadbike_01_F","B_Truck_01_transport_F","B_Truck_01_covered_F","B_APC_Tracked_01_rcws_F","B_APC_Tracked_01_AA_F","B_APC_Wheeled_01_cannon_F","B_MBT_01_cannon_F","B_MBT_01_arty_F","B_MBT_01_mlrs_F"];
-_OPFveh = ["O_MRAP_02_F","O_MRAP_02_gmg_F","O_MRAP_02_hmg_F","O_Quadbike_01_F","O_Truck_02_transport_F","O_Truck_02_covered_F","O_MBT_02_arty_F","O_MBT_02_cannon_F","O_APC_Wheeled_02_rcws_F","O_APC_Tracked_02_cannon_F","O_APC_Tracked_02_AA_F"];
-_INDveh = ["I_MRAP_03_F","I_MRAP_03_gmg_F","I_MRAP_03_hmg_F","I_Quadbike_01_F","I_Truck_02_transport_F","I_Truck_02_covered_F","I_APC_Wheeled_03_cannon_F","I_APC_Wheeled_03_cannon_F","I_APC_Wheeled_03_cannon_F"];
-
-_men = [];
 _veh = [];
+_rareVeh = ["O_G_Offroad_01_armed_F"];
+_uncVeh = ["RDS_S1203_Civ_03","C_Van_01_transport_F","RDS_Gaz24_Civ_03","RDS_Golf4_Civ_01","RDS_Hatchback_01_F","RDS_Ikarus_Civ_01","RDS_Ikarus_Civ_02","RDS_Octavia_Civ_01"];
+_commonVeh = ["O_G_Quadbike_01_F","I_G_Offroad_01_F","O_G_Offroad_01_F","C_Offroad_01_F","C_Hatchback_01_F","C_Hatchback_01_sport_F","C_SUV_01_F","C_Kart_01_Red_F"];
 
+_men = ["C_man_polo_1_F","C_man_polo_2_F","C_man_polo_3_F","C_man_polo_4_F","C_man_polo_5_F"];
+_CIVgrp = createGroup civilian;
 switch(_side)do{
 	case 0:{
-		_BLUhq = createCenter west;
-		_BLUgrp = createGroup west;
-		_veh = _BLUveh;
+		_BLUgrp = createGroup civilian;
 		_grp = _BLUgrp;
 	};
 	case 1:{
-		_OPFhq = createCenter east;
 		_OPFgrp = createGroup east;
-		_veh = _OPFveh;
 		_grp = _OPFgrp;
 	};
 	case 2:{
-		_INDhq = createCenter resistance;
-		_INDgrp = createGroup resistance;
-		_veh = _INDveh;
+		_INDgrp = createGroup independent;
 		_grp = _INDgrp;
 	};
 };
-
+_vehRarity = random 100;
+if (_vehRarity > 90) then {
+	_veh = _rareVeh;
+} else {
+	if (_vehRarity > 60) then {
+		_veh = _uncVeh;
+	} else {
+		_veh = _commonVeh;
+	};
+};
 _veh1 = _veh select (floor(random(count _veh)));
-_vehSpots = getNumber (configFile >> "CfgVehicles" >> _veh1 >> "transportSoldier");
+_vehSpots = floor random (getNumber (configFile >> "CfgVehicles" >> _veh1 >> "transportSoldier")) min 5;
 
 _radius = 40;
 _roads = [];
@@ -59,16 +62,33 @@ sleep 2;
 if(((vectorUp _vehicle) select 2) != 0)then{ _vehicle setvectorup [0,0,0]; };
 sleep 2;
 _vehicle allowDamage true;
-
+[_vehicle] call randomWeapons;
 _vCrew = [_vehicle, _grp] call BIS_fnc_spawnCrew;
 //_allUnitsArray set [(count _allUnitsArray), _vehicle];
 _crew = crew _vehicle;
+{
+	[_x] joinSilent _grp;
+	_x call LV_ReGear;
+	_x addEventHandler ["Killed", {_this call LV_Killed; (_this select 1) call removeNegativeScore}];
+} forEach _crew;
+
 
 if(_vehSpots > 0)then{
 	_i = 1; 
 	for "_i" from 1 to _vehSpots do {
-		_man1 = getText (configFile >> "CfgVehicles" >> _veh1 >> "crew");
-		_man = _grp createUnit [_man1, _pos, [], 0, "NONE"];
+		_man1 = _men select (floor(random(count _men)));
+		_man = _CIVgrp createUnit [_man1, _pos, [], 0.2, "NONE"];
+		_man addEventHandler ["Killed",
+		{
+			_this call LV_Killed;
+			(_this select 1) call removeNegativeScore;
+			//_deadNPC = _this select 0;
+			//_npcKiller = _this select 1;
+		}];
+		_man call LV_ReGear;
+
+		[_man] joinSilent _grp;
+		
 		_man moveInCargo _vehicle;
 		sleep 0.3;
 	};

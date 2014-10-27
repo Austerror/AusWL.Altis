@@ -6,9 +6,21 @@
 
 if (isDedicated) exitWith {};
 
-//[] execVM "client\functions\bannedNames.sqf";
+if (!isServer) then
+{
+	waitUntil {!isNil "A3W_network_compileFuncs"};
+	
+	_networkCompile = [] spawn A3W_network_compileFuncs;
+	A3W_network_compileFuncs = nil;
+	
+	waitUntil {scriptDone _networkCompile};
+};
 
-showPlayerIcons = true;
+waitUntil {!isNil "A3W_serverSetupComplete"};
+
+[] execVM "client\functions\bannedNames.sqf";
+
+showPlayerIcons = false;
 mutexScriptInProgress = false;
 respawnDialogActive = false;
 groupManagmentActive = false;
@@ -27,109 +39,139 @@ waitUntil {time > 0.1};
 removeAllWeapons player;
 player switchMove "";
 
-//Stop people being civ's.
-if(!(playerSide in [WEST])) then {
-	endMission "LOSER";
-};
-
 // initialize actions and inventory
 "client\actions" call mf_init;
 "client\inventory" call mf_init;
 "client\items" call mf_init;
 
 //Call client compile list.
-player call compile preprocessFileLineNumbers "client\functions\clientCompile.sqf";
+call compile preprocessFileLineNumbers "client\functions\clientCompile.sqf";
 
-//Player setup
-player call playerSetup;
-//waitUntil {scriptDone _playerSetupScript};
-// Player saving - Load from iniDB
-
-positionLoaded = 0;
-[] execVM "persistence\players\c_serverSaveRelay.sqf";
-waitUntil {!isNil "fn_SaveToServer"};
-[] execVM "persistence\players\c_playerDBSetup.sqf";
-waitUntil {!isNil "statFunctionsLoaded"};
-_loadPlayerAccount = [] execVM "persistence\players\c_loadAccount.sqf";
-waitUntil {scriptDone _loadPlayerAccount};
-waitUntil {positionLoaded == 1};
-
-// iniDB stuff end
-
-// Territory system enabled?
-//if (count (call config_territory_markers) > 0) then {
-//	territoryActivityHandler = "territory\client\territoryActivityHandler.sqf" call mf_compile;
-//	[] execVM "territory\client\createCaptureTriggers.sqf";
-//};
-
-// Find out if the player has been moved by the persistence system
-_playerWasMoved = player getVariable ["playerWasMoved", 0];
+//Stop people being civ's.
+if !(playerSide in [BLUFOR,OPFOR,INDEPENDENT]) exitWith
+{
+	endMission "LOSER";
+};
 
 //Setup player events.
-if(!isNil "client_initEH") then {player removeEventHandler ["Respawn", client_initEH];};
+if (!isNil "client_initEH") then { player removeEventHandler ["Respawn", client_initEH] };
+playableUnitOccupier_PV = player; publicVariableServer "playableUnitOccupier_PV"; 
+player addEventHandler ["Init", { playableUnitOccupier_PV = _this select 0; publicVariableServer "playableUnitOccupier_PV"}]; 
 player addEventHandler ["Respawn", { _this spawn onRespawn }];
 player addEventHandler ["Killed", { _this spawn onKilled }];
+
+//Player setup
+player call playerSetupStart;
+
+
+// Deal with money here
+_baseMoney = ["A3W_startingMoney", 0] call getPublicVar;
+if (isNil {player getVariable "cmoney"}) then { player setVariable ["cmoney", _baseMoney, true] };
+//player setVariable ["cmoney", _baseMoney, true];
+// Player saving - Load from iniDB
+if (["A3W_playerSaving"] call isConfigOn) then
+{
+	call compile preprocessFileLineNumbers "persistence\players\c_setupPlayerDB.sqf";
+	call fn_requestPlayerData;
+	
+	waitUntil {!isNil "playerData_loaded"};
+	// If it's a brand new player (or DB has been reset) then give them 0 experience.
+	//if (isNil {player getVariable "experience"}) then { player setVariable ["experience", 0, true] };
+	//if (isNil {player getVariable "level"}) then { player setVariable ["level", 0, true] };
+	[] spawn
+	{
+		// Save player every 60s
+		while {true} do
+		{
+			sleep 60;
+			call fn_savePlayerData;
+		};
+	};
+};
+
+if (isNil "playerData_alive") then
+{
+	diag_log "isNil playerData_alive = true";
+	player call playerSetupGear;
+} else {
+	diag_log "isNil playerData_alive = false";
+};
+
+player call playerSetupEnd;
+
+diag_log format ["Player starting with $%1", player getVariable ["cmoney", 0]];
+
+// Territory system enabled?
+if (count (["config_territory_markers", []] call getPublicVar) > 0) then
+{
+	territoryActivityHandler = "territory\client\territoryActivityHandler.sqf" call mf_compile;
+	[] execVM "territory\client\createCaptureTriggers.sqf";
+};
 
 //Setup player menu scroll action.
 [] execVM "client\clientEvents\onMouseWheel.sqf";
 
-// Taken from commented out block below
+// Austerror custom actions
+//[] execVM "custom\austerrorActions.sqf";
+
+//Setup Key Handler
+waituntil {!(IsNull (findDisplay 46))};
+(findDisplay 46) displayAddEventHandler ["KeyDown", "_this call onKeyPress"];
+
 "currentDate" addPublicVariableEventHandler {[] call timeSync};
 "messageSystem" addPublicVariableEventHandler {[] call serverMessage};
+"clientMissionMarkers" addPublicVariableEventHandler {[] call updateMissionsMarkers};
+// "clientRadarMarkers" addPublicVariableEventHandler {[] call updateRadarMarkers};
+"pvar_teamKillList" addPublicVariableEventHandler {[] call updateTeamKiller};
+"publicVar_teamkillMessage" addPublicVariableEventHandler {if (local (_this select 1)) then { [] spawn teamkillMessage }};
+"compensateNegativeScore" addPublicVariableEventHandler { (_this select 1) call removeNegativeScore };
 
+//client Executes
 [] execVM "client\functions\initSurvival.sqf";
 [] execVM "client\systems\hud\playerHud.sqf";
-
-// If we've got a position from the player save system, don't go through playerSpawn
-if (_playerWasMoved == 0) then {
-	thirstLevel = 100;
-	hungerLevel = 100;
-	true spawn playerSpawn;
-} else {
-	player switchMove "";
-};
-// ************************************
-// Start Player Saves.
-[] execVM "server\functions\playerSaves.sqf";
-player allowDamage true;
-// *******************
-// Prevent quick logging
-[] execVM "custom\preventLog.sqf";
-//**********************
-//*********Setup Key Handler
-waituntil {!(IsNull (findDisplay 46))};
-(findDisplay 46) displaySetEventHandler ["KeyDown", "_this call onKeyPress"];
-// *************************
-"clientMissionMarkers" addPublicVariableEventHandler {[] call updateMissionsMarkers};
-"clientRadarMarkers" addPublicVariableEventHandler {[] call updateRadarMarkers};
-"compensateNegativeScore" addPublicVariableEventHandler { (_this select 1) call removeNegativeScore };
-//client Executes
-[] execVM "client\functions\createTownMarkers.sqf";
 [] execVM "client\functions\playerTags.sqf";
 [] execVM "client\functions\groupTags.sqf";
 [] call updateMissionsMarkers;
-[] call updateRadarMarkers;
-if (isNil "FZF_IC_INIT") then
-{
-	call compile preprocessFileLineNumbers "client\functions\newPlayerIcons.sqf";
-};
-[] spawn FZF_IC_INIT;
+// [] call updateRadarMarkers;
 
+[] spawn
 {
-	if (isPlayer _x && {!isNil ("addScore_" + (getPlayerUID _x))}) then
+	call compile preprocessFileLineNumbers "client\functions\createTownMarkers.sqf"; // wait until town markers are placed before adding others
+	[] execVM "client\functions\createGunStoreMarkers.sqf";
+	[] execVM "client\functions\createGeneralStoreMarkers.sqf";
+	[] execVM "client\functions\createVehicleStoreMarkers.sqf";
+};
+
+[] spawn playerSpawn;
+
+[] execVM "client\functions\drawPlayerIcons.sqf";
+[] execVM "addons\fpsFix\vehicleManager.sqf";
+[] execVM "custom\lootspawner\LSclientScan.sqf";
+
+//[player, -1, 0.8, true] call BIS_fnc_sandstorm;
+
+// Synchronize score compensation
+{
+	if (isPlayer _x) then
 	{
-		_x spawn removeNegativeScore;
+		_scoreVar = "addScore_" + getPlayerUID _x;
+		_scoreVal = missionNamespace getVariable _scoreVar;
+		
+		if (!isNil "_scoreVal" && {typeName _scoreVal == "SCALAR"}) then
+		{
+			_x addScore _scoreVal;
+		};
 	};
 } forEach playableUnits;
 
-player allowDamage true;
-[] execVM "addons\fpsFix\vehicleManager.sqf";
-/*************************************************************************************
-"pvar_teamKillList" addPublicVariableEventHandler {[] call updateTeamKiller};
-"publicVar_teamkillMessage" addPublicVariableEventHandler {if (local (_this select 1)) then { [] spawn teamkillMessage }};
+// update player's spawn beacon
 
-//waitUntil {playerSetupComplete == true};
-[] execVM "client\functions\createGunStoreMarkers.sqf";
-[] execVM "client\functions\createGeneralStoreMarkers.sqf";
-[] execVM "client\functions\createVehicleStoreMarkers.sqf";
-*************************************************************************************/
+{
+	if (_x getVariable ["ownerUID",""] == getPlayerUID player) then
+	{
+		//_x setVariable ["ownerName", name player, true];
+		//_x setVariable ["ownerName", name player, true];
+		_x setVariable ["side", playerSide, true];
+	};
+} forEach pvar_spawn_beacons;
+

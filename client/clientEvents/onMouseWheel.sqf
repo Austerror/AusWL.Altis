@@ -7,11 +7,13 @@ playerMenuHandle = [] spawn
 	waituntil {!isnull player};
 	private ["_veh"];
 	while {true} do {
-		waituntil {vehicle player == player};
-		if (!isnil "_veh") then {_veh removeaction playerMenuId};
+		waituntil {sleep 0.1; vehicle player == player};
+		if (!isnil "_veh") then {_veh removeaction playerMenuId}; //_veh removeaction playerCraftingId};
 		playerMenuId = player addAction [format ["<img image='client\icons\playerMenu.paa' color='#ff7f00'/> <t color='#ff7f00'>%1</t>", "[<t color='#FFFFFF'>Player Menu</t><t color='#ff7f00'>]</t>"], "client\systems\playerMenu\init.sqf", [], -10, false, false, "", "local player"];
-		waituntil {vehicle player != player};
+		// playerCraftingId = player addAction [format ["<img image='client\icons\playerMenu.paa' color='#ff7f00'/> <t color='#ff7f00'>%1</t>", "[<t color='#FFFFFF'>Crafting</t><t color='#ff7f00'>]</t>"], "client\systems\crafting\init.sqf", [], -10, false, false, "", "local player"];
+		waituntil {sleep 0.1; vehicle player != player};
 		player removeaction playerMenuId;
+		// player removeaction playerCraftingId;
 		_veh = vehicle player;
 		playerMenuId = _veh addAction [format ["<img image='client\icons\playerMenu.paa' color='#ff7f00'/> <t color='#ff7f00'>%1</t>", "[<t color='#FFFFFF'>Player Menu</t><t color='#ff7f00'>]</t>"], "client\systems\playerMenu\init.sqf", [], -10, false, false, "", "local player"];
 	};

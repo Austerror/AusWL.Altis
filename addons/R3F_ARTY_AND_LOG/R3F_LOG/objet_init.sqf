@@ -23,7 +23,7 @@ if (isNil "_est_desactive") then
 	_objet setVariable ["R3F_LOG_disabled", false];  //on altis its smarter to only enable deplacement on objects we WANT players to move so if it doesnt find an r3f tag, it disables r3f on the object
 };
 
-// Définition of the local variable if it is not defined in the network
+// Définition locale de la variable si elle n'est pas définie sur le réseau
 _est_transporte_par = _objet getVariable "R3F_LOG_est_transporte_par";
 if (isNil "_est_transporte_par") then
 {
@@ -37,18 +37,19 @@ if (isNil "_est_deplace_par") then
 	_objet setVariable ["R3F_LOG_est_deplace_par", objNull, false];
 };
 
-// Do not ride in a vehicle that is in transit
+// Ne pas monter dans un véhicule qui est en cours de transport
 _objet addEventHandler ["GetIn",
 {
-	if (_this select 2 == player) then
+	_veh = _this select 0;
+	_movedBy = _veh getVariable ["R3F_LOG_est_deplace_par", objNull];
+	_towedBy = _veh getVariable ["R3F_LOG_est_transporte_par", objNull];
+	
+	if (_this select 2 == player && (_this select 1 == "DRIVER" || _towedBy isKindOf "Helicopter")) then
 	{
-		_this spawn
+		if (!isNull _towedBy || {!isNull _movedBy && alive _movedBy}) then
 		{
-			if ((!(isNull (_this select 0 getVariable "R3F_LOG_est_deplace_par")) && (alive (_this select 0 getVariable "R3F_LOG_est_deplace_par"))) || !(isNull (_this select 0 getVariable "R3F_LOG_est_transporte_par"))) then
-			{
-				player action ["eject", _this select 0];
-				player globalChat STR_R3F_LOG_transport_en_cours;
-			};
+			player action ["eject", _veh];
+			player globalChat STR_R3F_LOG_transport_en_cours;
 		};
 	};
 }];
@@ -56,7 +57,7 @@ _objet addEventHandler ["GetIn",
 if ({_objet isKindOf _x} count R3F_LOG_CFG_objets_deplacables > 0) then
 {
 	_objet addAction [("<img image='client\icons\r3f_lift.paa' color='#ffff00'/> <t color='#ffff00'>" + STR_R3F_LOG_action_deplacer_objet + "</t>"), "addons\R3F_ARTY_AND_LOG\R3F_LOG\objet_deplacable\deplacer.sqf", nil, 5, false, true, "", "R3F_LOG_objet_addAction == _target && R3F_LOG_action_deplacer_objet_valide && !(_target getVariable ['objectLocked', false])"];
-	_objet addAction [("<img image='client\icons\r3f_lock.paa' color='#ff0000'/> <t color='#ff0000'>" + STR_LOCK_OBJECT + "</t>"), "addons\R3F_ARTY_AND_LOG\R3F_LOG\objet_deplacable\objectLockStateMachine.sqf", _doLock, -5, false, true, "", "R3F_LOG_objet_addAction == _target && R3F_LOG_action_deplacer_objet_valide && Object_canLock"];
+	_objet addAction [("<img image='client\icons\r3f_lock.paa' color='#ff0000'/> <t color='#ff0000'>" + STR_LOCK_OBJECT + "</t>"), "addons\R3F_ARTY_AND_LOG\R3F_LOG\objet_deplacable\objectLockStateMachine.sqf", _doLock, -5, false, true, "", "R3F_LOG_objet_addAction == _target && R3F_LOG_action_deplacer_objet_valide && Object_canLock && !(_target isKindOf 'AllVehicles')"];
 	_objet addAction [("<img image='client\icons\r3f_unlock.paa' color='#06ef00'/> <t color='#06ef00'>" + STR_UNLOCK_OBJECT + "</t>"), "addons\R3F_ARTY_AND_LOG\R3F_LOG\objet_deplacable\objectLockStateMachine.sqf", _doUnlock, -5, false, true, "", "R3F_LOG_objet_addAction == _target && R3F_LOG_action_deplacer_objet_valide && !Object_canLock"];
 };
 

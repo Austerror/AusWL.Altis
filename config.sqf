@@ -29,53 +29,26 @@ cityList = compileFinal str
 	["Town_17", 150, "Oreokastro"],
 	["Town_18", 100, "Dump"],
 	["Town_19", 125, "Negades"],
-	["Town_20", 100, "Frini"],
-	["Town_21", 100, "Thronos"],
-	["Town_22", 50, "Faros"],
-	["Town_23", 100, "Krya Nera"],
-	["Town_24", 200, "Gelati"],
-	["Town_25", 150, "Ifestiona"],
-	["Town_26", 50, "Cap Zefyris"],
-	["Town_27", 150, "Kalithea"],
-	["Town_28", 150, "Ioannina"],
-	["Town_29", 250, "Pefkas Bay"],
-	["Town_30", 250, "Molos"],
-	["Town_31", 200, "Gatolia"],
-	["Town_32", 100, "Power Plant"],
-	["Town_33", 150, "Cap Kategidis"],
-	["Town_34", 200, "Dorida"],
-	["Town_35", 250, "Aktinarki"],
-	["Town_36", 50, "Surf Club"],
-	["Town_37", 300, "Panagia"],
-	["Town_38", 150, "Feres"],
-	["Town_39", 100, "Trachia"],
-	["Town_40", 50, "Magos"],
-	["Town_41", 100, "Agia Triada"],
-	["Town_42", 100, "Gori"],
-	["Town_43", 250, "Agios Konstantinos"],
-	["Town_44", 100, "Orino"],
-	["Town_45", 300, "Gravia"],
-	["Town_46", 200, "Kalochori"],
-	["Town_47", 200, "Rodopoli"],
-	["Town_48", 150, "Anthrakia"],
-	["Town_49", 200, "Power Plant"],
-	["Town_50", 150, "Factory"],
-	["Town_51", 150, "Kore"],
-	["Town_52", 100, "Topolia"],
-	["Town_53", 200, "Lakka"],
-	["Town_54", 150, "Stavros"],
-	["Town_55", 100, "Alikampos"],
-	["Town_56", 50, "Agia Stemma"],
-	["Town_57", 100, "Factory"],
-	["Town_58", 200, "Poliakko"],
-	["Town_59", 100, "Katalaki"],
-	["Town_60", 150, "Therisa"],
-	["Town_61", 200, "Nari"],
-	["Town_62", 100, "Edessai"],
-	["Town_63", 100, "Athanos"]
+	["Town_20", 100, "Frini"]
 ];
 
-cityLocations = [];
+militarylist = compileFinal str
+[
+	["milSpawn_1"],
+	["milSpawn_2"],
+	["milSpawn_3"],
+	["milSpawn_4"],
+	["milSpawn_5"],
+	["milSpawn_6"],
+	["milSpawn_7"],
+	["milSpawn_8"],
+	["milSpawn_9"],
+	["milSpawn_10"],
+	["milSpawn_11"],
+	["milSpawn_12"],
+	["milSpawn_13"],
+	["milSpawn_14"]
+];
 
 config_items_jerrycans_max = compileFinal "1";
 config_items_syphon_hose_max = compileFinal "1";
@@ -88,6 +61,14 @@ config_refuel_amounts = compileFinal str
 	["Air", 0.10]
 ];
 
+// NOTE: Player saving and money settings moved to external config (A3Wasteland_settings\main_config.sqf), default values are set in server\default_config.sqf
+
+// Is player saving enabled?
+// config_player_saving_enabled = compileFinal "0";
+
+// How much do players spawn with?
+// config_initial_spawn_money = compileFinal "100";
+
 // Territory system definitions. See territory/README.md for more details.
 //
 // Format is:
@@ -97,6 +78,26 @@ config_refuel_amounts = compileFinal str
 // 4 - Territory category, currently unused. See territory/README.md for details.
 config_territory_markers = compileFinal str
 [
-	//["TERRITORY_AIRPORT_TEST", "Main Airport", 500, "AIRFIELD"] // Also add to the map to test
+	["TERRITORY_THRONOS_CASTLE", "Thronos Castle", 300, "CASTLE"],
+	//["TERRITORY_KASTRO_CASTLE", "Kastro Castle", 300, "CASTLE"],
+	["TERRITORY_SW_AIRFIELD", "Southwest Airfield", 300, "AIRFIELD"],
+	["TERRITORY_MAIN_AIRBASE_SW", "Altis Airport (SW)", 200, "AIRBASE"],
+	["TERRITORY_MAIN_AIRBASE_CENTER", "Altis Airport (Center)", 200, "AIRBASE"],
+	["TERRITORY_MAIN_AIRBASE_NE", "Altis Airport (NE)", 200, "AIRBASE"],
+	["TERRITORY_NE_AIRFIELD", "Northeast Airfield", 300, "AIRFIELD"],
+	["TERRITORY_SE_AIRFIELD", "Southeast Airfield", 300, "AIRFIELD"],
+	["TERRITORY_NW_AIRFIELD", "Northwest Airfield", 300, "AIRFIELD"],
+	["TERRITORY_SALTFLATS_AIRFIELD", "Saltflats", 300, "AIRFIELD"],
+	["TERRITORY_WEST_POWER_PLANT", "West Power Plant", 300, "POWER"],
+	["TERRITORY_CENTER_POWER_PLANT", "Center Power Plant", 300, "POWER"],
+	["TERRITORY_EAST_POWER_PLANT", "East Power Plant", 300, "POWER"],
+	["TERRITORY_IRAKLIA_RUINS", "Iraklia Ruins", 300, "RUINS"],
+	["TERRITORY_ARTINARKI_RUINS", "Artinarki Ruins", 300, "RUINS"],
+	["TERRITORY_MOLOS_TRANSMITTER", "Molos Transmitter", 300, "TRANSMITTER"],
+	["TERRITORY_DIDYMOS_TRANSMITTER_1", "Didymos Transmitter One", 300, "TRANSMITTER"],
+	["TERRITORY_DIDYMOS_TRANSMITTER_2", "Didymos Transmitter Two", 300, "TRANSMITTER"],
+	["TERRITORY_MAGOS_TRANSMITTER", "Magos Transmitter", 300, "TRANSMITTER"],
+	["TERRITORY_PYRSOS_TRANSMITTER", "Pyrsos Transmitter", 300, "TRANSMITTER"],
+	["TERRITORY_MILITARY_RESEARCH", "Telos Research Facility", 300, "MILITARY"]
 ];
 

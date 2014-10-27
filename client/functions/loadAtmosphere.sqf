@@ -24,7 +24,7 @@ if !(_this) exitWith{};
         _color = [1.0, 0.9, 0.8];
         _alpha = 0.02 + random 0.02;
         _ps = "#particlesource" createVehicleLocal _pos;  
-        _ps setParticleParams [["\Ca\Data\ParticleEffects\Universal\universal.p3d", 16, 12, 8], "", "Billboard", 1, 3, [0, 0, -6], _velocity, 1, 1.275, 1, 0, [9], [_color + [0], _color + [_alpha], _color + [0]], [1000], 1, 0, "", "", _obj];
+        _ps setParticleParams [["\A3\Data\ParticleEffects\Universal\universal.p3d", 16, 12, 8], "", "Billboard", 1, 3, [0, 0, -6], _velocity, 1, 1.275, 1, 0, [9], [_color + [0], _color + [_alpha], _color + [0]], [1000], 1, 0, "", "", _obj];
         _ps setParticleRandom [3, [30, 30, 0], [0, 0, 0], 1, 0, [0, 0, 0, 0.01], 0, 0];
         _ps setParticleCircle [0.1, [0, 0, 0]];
         _ps setDropInterval 0.01;
@@ -42,7 +42,7 @@ if !(_this) exitWith{};
     waituntil {isplayer player};
     _pos = position player;
     _parray = [
-    /* 00 */        ["\Ca\Data\ParticleEffects\Universal\Universal", 16, 12, 8, 1],//"\Ca\Data\cl_water",
+    /* 00 */        ["\A3\Data\ParticleEffects\Universal\Universal", 16, 12, 8, 1],//"\A3\Data\cl_water",
     /* 01 */        "",
     /* 02 */        "Billboard",
     /* 03 */        1,

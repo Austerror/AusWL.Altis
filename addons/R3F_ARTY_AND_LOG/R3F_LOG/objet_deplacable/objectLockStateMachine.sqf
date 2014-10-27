@@ -51,7 +51,8 @@ switch (_lockState) do {
 			if (_iteration >= _totalDuration) exitWith { // Sleep a little extra to show that lock has completed.
 				sleep 1;
 				_currObject setVariable ["objectLocked", true, true];
-				_currObject setVariable ["ownerId", _uid, true];
+				_currObject setVariable ["ownerUID", _uid, true];
+				_currObject setVariable ["lockDate", date, true];
 				_currObject addEventHandler ["GetIn", { player call fn_gearMenuChecks; }];
 				2 cutText ["", "PLAIN DOWN", 1];
 				R3F_LOG_mutex_local_verrou = false;
@@ -62,7 +63,7 @@ switch (_lockState) do {
 	};
 	case 1:{ // UNLOCK
 		_uid = getPlayerUID player;
-		_ownerId = cursorTarget getVariable "ownerId";
+		_ownerId = cursorTarget getVariable "ownerUID";
 		//player globalChat format["_uid = %1, _ownerId = %2.",_uid,_ownerId];
 		if (_uid == _ownerId) then {
 			R3F_LOG_mutex_local_verrou = true;
@@ -93,7 +94,8 @@ switch (_lockState) do {
 				if (_iteration >= _totalDuration) exitWith { // Sleep a little extra to show that lock has completed
 					sleep 1;
 					_currObject setVariable ["objectLocked", false, true];
-					//_currObject setVariable ["ownerId", "", true];
+					_currObject setVariable ["lockDate", nil, true];
+					_currObject setVariable ["ownerUID", "", true];
 					_currObject removeEventHandler ["GetIn", 0];
 					2 cutText ["", "PLAIN DOWN", 1];
 					R3F_LOG_mutex_local_verrou = false;
@@ -134,7 +136,7 @@ switch (_lockState) do {
 			if (_iteration >= _totalDuration) exitWith { // Sleep a little extra to show that lock has completed.
 				sleep 1;
 				_currObject setVariable ["objectLocked", true, true];
-				_currObject setVariable ["ownerId", _uid, true];
+				_currObject setVariable ["ownerUID", _uid, true];
 				_currObject addEventHandler ["GetIn", { player call fn_gearMenuChecks; }];
 				2 cutText ["", "PLAIN DOWN", 1];
 				R3F_LOG_mutex_local_verrou = false;
@@ -145,7 +147,7 @@ switch (_lockState) do {
 	};
 	case true:{ // UNLOCK
 		_uid = getPlayerUID player;
-		_ownerId = cursorTarget getVariable "ownerId";
+		_ownerId = cursorTarget getVariable "ownerUID";
 		//player globalChat format["_uid = %1, _ownerId = %2.",_uid,_ownerId];
 		if (_uid == _ownerId) then {
 			R3F_LOG_mutex_local_verrou = true;
@@ -176,7 +178,7 @@ switch (_lockState) do {
 				if (_iteration >= _totalDuration) exitWith { // Sleep a little extra to show that lock has completed
 					sleep 1;
 					_currObject setVariable ["objectLocked", false, true];
-					_currObject setVariable ["ownerId", "", true];
+					_currObject setVariable ["ownerUID", "", true];
 					_currObject removeEventHandler ["GetIn", 0];
 					2 cutText ["", "PLAIN DOWN", 1];
 					R3F_LOG_mutex_local_verrou = false;
@@ -188,11 +190,11 @@ switch (_lockState) do {
 		player switchMove ""; // Redundant reset of animation state to avoid getting locked in animation.     
 	};
 	default{  // This should not happen... 
-		diag_log format["WASTELAND DEBUG: An error has occured in LockStateMachine.sqf. _lockState was unknown. _lockState actual: %1", _lockState];
+		//diag_log format["WASTELAND DEBUG: An error has occured in LockStateMachine.sqf. _lockState was unknown. _lockState actual: %1", _lockState];
 	};
 	
 	if !(R3F_LOG_mutex_local_verrou) then {
 		R3F_LOG_mutex_local_verrou = false;
-		diag_log format["WASTELAND DEBUG: An error has occured in LockStateMachine.sqf. Mutex lock was not reset. Mutex lock state actual: %1", R3F_LOG_mutex_local_verrou];
+		//diag_log format["WASTELAND DEBUG: An error has occured in LockStateMachine.sqf. Mutex lock was not reset. Mutex lock state actual: %1", R3F_LOG_mutex_local_verrou];
 	}; 
 };

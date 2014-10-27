@@ -17,7 +17,7 @@ _error = [_vehicle] call mf_jerrycan_can_refuel;
 if (_error != "") exitWith {[_error, 5] call mf_notify_client; false;};
 
 _checks = {
-	private ["_progress","_vehicle","_failed", "_text"];
+	private ["_progress","_failed", "_text"];
 	_progress = _this select 0;
 	_vehicle = _this select 1;
     _text = "";
@@ -34,7 +34,7 @@ _checks = {
 	};
 	[_failed, _text];
 };
-_success = [DURATION, ANIMATION, _checks, [_vehicle]] call mf_util_playUntil;
+_success = [DURATION, ANIMATION, _checks, [_vehicle]] call a3w_actions_start;
 if (_success) then {
     // the fuel qty is handled by mf_remote_refuel.
     // will execute locally if _currVehicle is local

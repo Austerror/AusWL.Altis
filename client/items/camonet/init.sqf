@@ -7,7 +7,6 @@
 private ["_path","_ground_type", "_icon", "_unpack", "_pack"];
 _path = _this;
 
-MF_ITEMS_CAMO_NET = "camonet";
 MF_ITEMS_CAMO_NET_TYPE = "CamoNet_INDP_open_F";
 _ground_type = "CamoNet_INDP_open_F";
 _icon = "client\icons\take.paa";

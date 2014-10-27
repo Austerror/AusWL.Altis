@@ -55,7 +55,7 @@ if (ismultiplayer && _mode == 0) then {
 					_ownerID = -1;
 				};
 			};
-			[1,_params,_functionName,_target,_isPersistent,_isCall] call compile format ["%1 = _this", _mpPacketKey];
+			missionNamespace setVariable [_mpPacketKey, [1,_params,_functionName,_target,_isPersistent,_isCall]];
 
 			//--- Send to clients
 			if (_ownerID < 0) then {
@@ -70,7 +70,7 @@ if (ismultiplayer && _mode == 0) then {
 
 			//--- Server execution (for all or server only)
 			if (_ownerID < 0 || _ownerID == _serverID) then {
-				[_mpPacketKey, call compile _mpPacketKey] spawn TPG_fnc_MPexec;
+				[_mpPacketKey, missionNamespace getVariable _mpPacketKey] spawn TPG_fnc_MPexec;
 			};
 
 			//--- Persistent call (for all or clients)
@@ -81,7 +81,7 @@ if (ismultiplayer && _mode == 0) then {
 					_queue = _logic getvariable ["BIS_fnc_MP_queue",[]];
 					_queue set [
 						count _queue,
-						+(call compile _mpPacketKey)
+						+(missionNamespace getVariable _mpPacketKey)
 					];
 					_logic setvariable ["BIS_fnc_MP_queue",_queue,true];
 				} else {
@@ -112,8 +112,8 @@ if (ismultiplayer && _mode == 0) then {
 			"clientFlagHandler",
 			"titleTextMessage",
 			"territoryActivityHandler",
-			"applyVehicleTexture",
-			"spawnStoreObject"
+			"spawnStoreObject",
+			"pushVehicleBack"
 		];
 		
 		_blockedParam = 
@@ -159,7 +159,7 @@ if (ismultiplayer && _mode == 0) then {
 		{
 			if (isServer) then
 			{
-				diag_log format ["TPG_fnc_MPexec: An unknown player attempted to execute: function=%2 parameters=[%1]", _functionName, _params];
+				//diag_log format ["TPG_fnc_MPexec: An unknown player attempted to execute: function=%2 parameters=[%1]", _functionName, _params];
 			};
 		};
 	};

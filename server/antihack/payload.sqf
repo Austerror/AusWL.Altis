@@ -58,7 +58,7 @@ while { true } do
 	{
 		waitUntil {time > 0.1};
 		
-		diag_log str [profileName, getPlayerUID player, _cheatFlag select 0, _cheatFlag select 1];
+		//diag_log str [profileName, getPlayerUID player, _cheatFlag select 0, _cheatFlag select 1];
 		
 		[[profileName, getPlayerUID player, _cheatFlag select 0, _cheatFlag select 1, _flagChecksum], "flagHandler", false, false] call TPG_fnc_MP;
 		

@@ -32,8 +32,49 @@ publicVariable "currentInvites";
 currentStaticHelis = []; // Storage for the heli marker numbers so that we don't spawn wrecks on top of live helis
 
 //Civilian Vehicle List - Random Spawns
-civilianVehicles =
+comVehicles = 
 [
+	"C_Van_01_box_F",
+	"C_Van_01_transport_F"
+];
+milVehicles = 
+[
+	"B_Quadbike_01_F",
+	"O_Quadbike_01_F",
+	"I_Quadbike_01_F",
+	"I_G_Quadbike_01_F",
+	"O_Truck_02_covered_F",
+	"I_Truck_02_covered_F",
+	"O_Truck_02_transport_F",
+	"I_Truck_02_transport_F",
+	"I_G_Offroad_01_armed_F",
+	"I_Truck_02_Fuel_F",
+	"O_Truck_02_Fuel_F",
+	"I_Truck_02_medical_F",
+	"O_Truck_02_medical_F",
+	"B_MRAP_01_F",
+	"O_MRAP_02_F",
+	"I_MRAP_03_F"
+];
+indmaVehicles = 
+[
+	"C_SUV_01_F",
+	"C_Offroad_01_F",
+	"I_G_Offroad_01_F",
+	"C_Van_01_box_F",
+	"C_Van_01_transport_F",
+	"CSJ_GyroC"
+];
+medVehicles = 
+[
+	"O_Truck_02_covered_F",
+	"I_Truck_02_medical_F",
+	"O_Truck_02_medical_F",
+	"RDS_S1203_Civ_03"
+];
+resVehicles = 
+[
+	"C_Quadbike_01_F",
 	"C_Hatchback_01_F",
 	"C_Hatchback_01_sport_F",
 	"C_SUV_01_F",
@@ -41,7 +82,37 @@ civilianVehicles =
 	"I_G_Offroad_01_F",
 	"C_Van_01_box_F",
 	"C_Van_01_transport_F",
-	"I_G_Van_01_transport_F"
+	"RDS_Gaz24_Civ_03",
+	"RDS_Golf4_Civ_01",
+	"RDS_Hatchback_01_F",
+	"RDS_Ikarus_Civ_01",
+	"RDS_Ikarus_Civ_02",
+	"RDS_Octavia_Civ_01",
+	"CSJ_GyroC"
+];
+indmiVehicles = 
+[
+	"I_G_Quadbike_01_F",
+	"C_Quadbike_01_F",
+	"CSJ_GyroC"
+];
+civilianVehicles =
+[
+	"C_Quadbike_01_F",
+	"C_Hatchback_01_F",
+	"C_Hatchback_01_sport_F",
+	"C_SUV_01_F",
+	"C_Offroad_01_F",
+	"I_G_Offroad_01_F",
+	"C_Van_01_box_F",
+	"C_Van_01_transport_F",
+	"RDS_Gaz24_Civ_03",
+	"RDS_Golf4_Civ_01",
+	"RDS_Hatchback_01_F",
+	"RDS_Ikarus_Civ_01",
+	"RDS_Ikarus_Civ_02",
+	"RDS_Octavia_Civ_01"
+	
 ];
 
 //Light Military Vehicle List - Random Spawns
@@ -50,22 +121,21 @@ lightMilitaryVehicles =
 	"B_Quadbike_01_F",
 	"O_Quadbike_01_F",
 	"I_Quadbike_01_F",
-	"C_Quadbike_01_F",
 	"I_G_Quadbike_01_F",
-//	"O_Truck_02_covered_F",
-//	"I_Truck_02_covered_F",
-//	"O_Truck_02_transport_F",
-//	"I_Truck_02_transport_F",
+	"O_Truck_02_covered_F",
+	"I_Truck_02_covered_F",
+	"O_Truck_02_transport_F",
+	"I_Truck_02_transport_F",
 	"I_G_Offroad_01_armed_F"
 ];
 
 //Medium Military Vehicle List - Random Spawns
 mediumMilitaryVehicles = 
 [
-//	"I_Truck_02_Fuel_F",
-//	"O_Truck_02_Fuel_F",
-//	"I_Truck_02_medical_F",
-//	"O_Truck_02_medical_F",
+	"I_Truck_02_Fuel_F",
+	"O_Truck_02_Fuel_F",
+	"I_Truck_02_medical_F",
+	"O_Truck_02_medical_F",
 	"B_MRAP_01_F",
 	"O_MRAP_02_F",
 	"I_MRAP_03_F"
@@ -88,6 +158,7 @@ waterVehicles =
 	"O_Boat_Armed_01_hmg_F",
 	"I_Boat_Armed_01_minigun_F",
 	"C_Boat_Civil_01_F",
+//	"I_SDV_01_F",
 	"C_Boat_Civil_01_police_F",
 	"C_Boat_Civil_01_rescue_F"
 ];
@@ -126,7 +197,6 @@ objectList =
 	"Land_HBarrierWall4_F",
 	"Land_HBarrierWall6_F",
 	"Land_HBarrierWall6_F",
-	"Land_LampShabby_F",
 	"Land_MetalBarrel_F",
 	"Land_Mil_ConcreteWall_F",
 	"Land_Mil_WallBig_4m_F",
@@ -135,9 +205,9 @@ objectList =
 	"Land_Pipes_large_F",
 	"Land_RampConcrete_F",
 	"Land_RampConcreteHigh_F",
-	"Land_Sacks_goods_F",
-	"Land_Shoot_House_Wall_F",
-	"Land_WaterBarrel_F"
+	//"Land_Sacks_goods_F",
+	"Land_Shoot_House_Wall_F"
+	//"Land_WaterBarrel_F"
 ];
 
 //Object List - Random Spawns.
@@ -153,58 +223,29 @@ staticWeaponsList =
 staticHeliList = 
 [
 	"B_Heli_Light_01_F",
-	"O_Heli_Light_02_unarmed_F"
+	"B_Heli_Light_01_F",
+	"O_Heli_Light_02_unarmed_F",
+	"I_Heli_light_03_unarmed_F"
+];
+
+//Object List - Random Planes.
+staticPlaneList = 
+[
+	"B_Plane_CAS_01_F",
+	"O_Plane_CAS_02_F",
+	"I_Plane_Fighter_03_CAS_F"
 ];
 
 //Random Weapon List - Change this to what you want to spawn in cars.
 vehicleWeapons =
 [
-//	"hgun_P07_F",
-//	"hgun_Rook40_F",
-//	"hgun_ACPC2_F",
-//	"arifle_SDAR_F",
-	"SMG_01_F",	// Vermin .45 ACP
-	"SMG_02_F",	// Sting 9mm
-	"hgun_PDW2000_F",
-	"arifle_TRG20_F",
-	"arifle_TRG21_F",
-	"arifle_TRG21_GL_F",
-	"arifle_Mk20C_F",
-	"arifle_Mk20_F",
-	"arifle_Mk20_GL_F",
-	"arifle_Katiba_F",
-	"arifle_Katiba_C_F",
-	"arifle_Katiba_GL_F",
-	"arifle_MXC_F",
-	"arifle_MX_F",
-	"arifle_MX_GL_F",
-	"arifle_MX_SW_F",
-	"arifle_MXM_F",
-//	"srifle_EBR_F",
-	"LMG_Mk200_F",
-	"LMG_Zafir_F"
+	"hgun_P07_F",
+	"Trixie_Enfield"
 ];
 
 vehicleAddition =
 [
 	"muzzle_snds_L", // 9mm
-	"muzzle_snds_M", // 5.56mm
-	"muzzle_snds_H", // 6.5mm
-	"muzzle_snds_H_MG", // 6.5mm LMG
-	"muzzle_snds_B", // 7.62mm
-	"muzzle_snds_acp", // .45 ACP
-	"optic_Arco",
-	"optic_SOS",
-	"optic_Hamr",
-	"optic_Aco",
-	"optic_ACO_grn",
-	"optic_aco_smg",
-	"optic_Holosight",
-	"optic_Holosight_smg",
-	"acc_flashlight",
-	"acc_pointer_IR",
-	"Medikit",
-	"Medikit",
 	"FirstAidKit",
 	"ToolKit"
 ];

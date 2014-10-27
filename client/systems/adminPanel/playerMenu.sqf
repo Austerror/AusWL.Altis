@@ -26,6 +26,7 @@ if (_uid call isAdmin) then
         if(side _x == west) then {_side = "BLUFOR";};
         if(side _x == east) then {_side = "OPFOR";};
         if(side _x == INDEPENDENT) then {_side = "Independent";}; 
+		if(side _x == civilian) then {_side = "CIV";};
 		_namestr = name(_x) + " [UID:" + getplayerUID(_x) + "] [Side:" + format["%1",_side] + "] [Team Lock:"+format["%1",_lockedSide]+"] [Punish Count:" + format["%1",_punishCount]+ "]";             
 		_index = _playerListBox lbAdd _namestr;
 		_playerListBox lbSetData [_index, str(_x)];

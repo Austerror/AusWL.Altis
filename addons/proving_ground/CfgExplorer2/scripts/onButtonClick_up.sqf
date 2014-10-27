@@ -13,7 +13,7 @@ _debug = false;
 
 if ((count ConfigPath) < 2) then 
 {
-	diag_log "onButtonClickUp.sqf: ERROR: Not enough Values in Array ConfigPath!";
+	//diag_log "onButtonClickUp.sqf: ERROR: Not enough Values in Array ConfigPath!";
 	if (true) exitWith {};
 };
 
@@ -23,10 +23,10 @@ _LastClassName = toUpper (configName (ConfigPath select (count ConfigPath - 1)))
 
 if (_debug) then
 {
-	diag_log text "===== onButtonClickUp.sqf =====";
-	diag_log text format["onButtonClickUp.sqf: ConfigPath    : %1",ConfigPath];
-	diag_log text format["onButtonClickUp.sqf: CurrentConfig : %1",CurrentConfig];
-	diag_log text format["onButtonClickUp.sqf: _LastClassName: %1",_LastClassName];
+	//diag_log text "===== onButtonClickUp.sqf =====";
+	//diag_log text format["onButtonClickUp.sqf: ConfigPath    : %1",ConfigPath];
+	//diag_log text format["onButtonClickUp.sqf: CurrentConfig : %1",CurrentConfig];
+	//diag_log text format["onButtonClickUp.sqf: _LastClassName: %1",_LastClassName];
 };
 
 // ***
@@ -40,7 +40,7 @@ ConfigPath resize (count ConfigPath - 1);
 // ***
 if (_debug) then
 {
-	diag_log format["onButtonClickUp.sqf: Parameters for hj_fn_showConfig: %1, %2",CurrentRoot, CurrentConfig];
+	//diag_log format["onButtonClickUp.sqf: Parameters for hj_fn_showConfig: %1, %2",CurrentRoot, CurrentConfig];
 };
 [CurrentRoot, ConfigPath] call GFNC(showConfig);
 
@@ -53,7 +53,7 @@ _lbCount = (lbsize 110) - 1;   // count entrys in listbox
 
 if (_debug) then
 { 
-	diag_log format["onButtonClickUP.sqf: Searching for Classname: %1", _LastClassName];
+	//diag_log format["onButtonClickUP.sqf: Searching for Classname: %1", _LastClassName];
 };
 
 for "_i" from 0 to _lbCount do 
@@ -73,7 +73,7 @@ for "_i" from 0 to _lbCount do
 
 if (_notFound) then 
 {
-	diag_log text format["onButtonClickUp.sqf: Anzahl Werte in ClassListBox: %1",_lbCount];
-	diag_log text format["onButtonClickUp.sqf: Error, no ClassName found!"];
+	//diag_log text format["onButtonClickUp.sqf: Anzahl Werte in ClassListBox: %1",_lbCount];
+	//diag_log text format["onButtonClickUp.sqf: Error, no ClassName found!"];
 	lbSetCurSel [110, 0];   
 };

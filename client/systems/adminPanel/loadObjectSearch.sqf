@@ -24,9 +24,9 @@ if (_uid call isAdmin) then
 	_objectSearchTermCtrl = _display displayCtrl objectSearchFindTexteditBox;
 
 	if (!isNil "objectSearchLastTermEntered") then {
-		diag_log format["We have a previous term %1", objectSearchLastTermEntered];
+		//diag_log format["We have a previous term %1", objectSearchLastTermEntered];
 		ctrlSetText [objectSearchFindTexteditBox, objectSearchLastTermEntered];
 	} else {
-		diag_log "objectSearchLastTermEntered was nil!";
+		//diag_log "objectSearchLastTermEntered was nil!";
 	};
 };  

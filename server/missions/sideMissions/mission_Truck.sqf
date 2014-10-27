@@ -28,7 +28,21 @@ diag_log format["WASTELAND SERVER - Side Mission Resumed: %1",_missionType];
 
 [_missionMarkerName,_randomPos,_missionType] call createClientMarker;
 
-_vehicleClass = ["B_Truck_01_covered_F", "B_Truck_01_fuel_F", "B_Truck_01_medical_F", "B_Truck_01_Repair_F", "O_Truck_02_covered_F", "O_Truck_02_fuel_F", "O_Truck_02_medical_F", "O_Truck_02_box_F", "I_Truck_02_covered_F", "I_Truck_02_fuel_F", "I_Truck_02_medical_F", "I_Truck_02_box_F"] call BIS_fnc_selectRandom;
+_vehicleClass =
+[
+	"B_Truck_01_covered_F",
+	"B_Truck_01_fuel_F",
+	"B_Truck_01_medical_F",
+	"B_Truck_01_Repair_F",
+	"O_Truck_03_covered_F",
+	"O_Truck_03_fuel_F",
+	"O_Truck_03_medical_F",
+	"O_Truck_03_repair_F",
+	"I_Truck_02_covered_F",
+	"I_Truck_02_fuel_F",
+	"I_Truck_02_medical_F",
+	"I_Truck_02_box_F"
+] call BIS_fnc_selectRandom;
 
 //Vehicle Class, Posistion, Fuel, Ammo, Damage
 _vehicle = [_vehicleClass,_randomPos,1,1,0,"NONE"] call createMissionVehicle;
@@ -47,7 +61,7 @@ if ([_vehicleName, (count toArray _vehicleName) - 10] call BIS_fnc_trimString ==
 _hint = parseText format ["<t align='center' color='%4' shadow='2' size='1.75'>Side Objective</t><br/><t align='center' color='%4'>------------------------------</t><br/><t align='center' color='%5' size='1.25'>%1</t><br/><t align='center'><img size='5' image='%2'/></t><br/><t align='center' color='%5'>A <t color='%4'>%3</t> has been immobilized, go get it for your team.</t>", _missionType, _picture, _vehicleName, sideMissionColor, subTextColor];
 [_hint] call hintBroadcast;
 
-_CivGrpM = createGroup east;
+_CivGrpM = createGroup civilian;
 [_CivGrpM,_randomPos] spawn createMidGroup;
 
 diag_log format["WASTELAND SERVER - Side Mission Waiting to be Finished: %1",_missionType];

@@ -1,5 +1,5 @@
 #include "defines.sqf"
-#define ERR_NOT_ENOUGH_FUNDS "You dont have enough money."
+#define ERR_NOT_ENOUGH_FUNDS "You don't have enough money."
 private ["_warchest", "_amount", "_money"];
 disableSerialization;
 _warchest = findDisplay IDD_WARCHEST;
@@ -21,6 +21,10 @@ switch (playerSide) do {
     case west : {
     	pvar_warchest_funds_west = pvar_warchest_funds_west + _amount;
     	publicVariable "pvar_warchest_funds_west";
+    };
+	case civilian : {
+    	pvar_warchest_funds_civ = pvar_warchest_funds_civ + _amount;
+    	publicVariable "pvar_warchest_funds_civ";
     };
     default {hint "WarchestRefrest - This Shouldnt Happen"};
 };

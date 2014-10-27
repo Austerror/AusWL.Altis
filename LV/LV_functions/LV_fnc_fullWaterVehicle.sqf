@@ -4,33 +4,22 @@ private ["_BLUhq","_BLUgrp","_veh","_grp","_OPFhq","_OPFgrp","_man1","_man","_i"
 _pos = _this select 0;
 _side = _this select 1;
 
-_BLUveh = ["B_Boat_Transport_01_F","B_SDV_01_F","B_Lifeboat","B_Boat_Armed_01_minigun_F"];
-_OPFveh = ["O_Boat_Transport_01_F","O_Boat_Armed_01_hmg_F","O_SDV_01_F","O_Lifeboat"];
-_INDveh = ["I_Boat_Transport_01_F","I_Boat_Armed_01_minigun_F","I_SDV_01_F"];
-
-_men = [];
-_veh = [];
-
+_veh = ["B_Boat_Transport_01_F","B_SDV_01_F","B_Lifeboat","B_Boat_Armed_01_minigun_F"];
+_men = ["C_man_polo_1_F","C_man_polo_2_F","C_man_polo_3_F","C_man_polo_4_F","C_man_polo_5_F"];
+_CIVgrp = createGroup civilian;
 switch(_side)do{
 	case 0:{
-		_BLUhq = createCenter west;
-		_BLUgrp = createGroup west;
-		_veh = _BLUveh;
+		_BLUgrp = createGroup civilian;
 		_grp = _BLUgrp;
 	};
 	case 1:{
-		_OPFhq = createCenter east;
 		_OPFgrp = createGroup east;
-		_veh = _OPFveh;
 		_grp = _OPFgrp;
 	};
 	case 2:{
-		_OPFhq = createCenter east;
-		_OPFgrp = createGroup east;
-		_veh = _OPFveh;
-		_grp = _OPFgrp;
+		_INDgrp = createGroup independent;
+		_grp = _INDgrp;
 	};
-	
 };
 
 
@@ -45,12 +34,32 @@ _vehicle setPos _pos1;
 _vCrew = [_vehicle, _grp] call BIS_fnc_spawnCrew;
 //_allUnitsArray set [(count _allUnitsArray), _vehicle];
 _crew = crew _vehicle;
-				
+{
+	[_x] joinSilent _grp;
+	_x call LV_ReGear;
+	_x addEventHandler ["Killed", {_this call LV_Killed; (_this select 1) call removeNegativeScore}];
+
+} forEach _crew;
+
 if(_vehSpots > 0)then{
 	_i = 1; 
 	for "_i" from 1 to _vehSpots do {
-		_man1 = getText (configFile >> "CfgVehicles" >> _veh1 >> "crew");
-		_man = _grp createUnit [_man1, _pos1, [], 0, "NONE"];
+		_man1 = _men select (floor(random(count _men)));
+		_man = _CIVgrp createUnit [_man1, _pos1, [], 0, "NONE"];
+		
+		_man addEventHandler ["Killed",
+		{
+			_deadNPC = _this select 0;
+			_npcKiller = _this select 1;
+			_moneydrop = [5,10,15,20,25,30,35,40,45,50];
+			_m = createVehicle ["Land_Money_F", _deadNPC call fn_getPos3D, [], 0.5, "CAN_COLLIDE"];
+			_m setVariable ["cmoney", (_moneydrop call BIS_fnc_selectRandom), true];
+			_m setVariable ["owner", "world", true];
+		}];
+		_man call LV_ReGear;
+
+		[_man] joinSilent _grp;		
+		
 		_man moveInCargo _vehicle;
 		sleep 0.3 ;
 	};

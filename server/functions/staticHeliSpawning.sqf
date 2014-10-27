@@ -7,49 +7,28 @@
 
 if (!isServer) exitWith {};
 
-private ["_count", "_position", "_markerName", "_marker", "_newPos", "_i", "_doSpawnWreck"];
+private ["_count", "_position", "_marker", "_numToSpawn", "_spawnMarkers", "_markerUsed"];
+_numToSpawn = 0;
 _count = 0;
-
+_numToSpawn = maxHeliSpawn - objectCountHelis;
+_spawnMarkers = [];
 {
-	_marker = _x;
-	
-	if (["heliSpawn_", _marker] call fn_findString == 0) then
+	if (["heliSpawn_", _x] call fn_findString == 0) then
 	{
-		if (!(_marker in currentStaticHelis) && {random 1 < 0.75}) then // 75% chance spawning
-		{
-			_position = markerPos _marker;
-			[0, _position] call staticHeliCreation;
-			
-			currentStaticHelis set [count currentStaticHelis, _marker];
-			
-			_count = _count + 1;
-		};
+		_spawnMarkers = _spawnMarkers + [_x];
 	};
 } forEach allMapMarkers;
-
-diag_log format["WASTELAND SERVER - %1 Static helis Spawned",_count];
-
-/*
-{diag_log format["Heli %1 = %2",_forEachIndex, _x];} forEach currentStaticHelis;
-for "_i" from 1 to 24 do {
-    _doSpawnWreck = true;
-    
-    { // Check if current iteration already exists as a live heli...
-    	if (_i == _x) then {
-			_doSpawnWreck = false;
-        };
-    } forEach currentStaticHelis;
-    
-    if (_doSpawnWreck) then {
-    	_position = getMarkerPos format ["heliSpawn_%1", _i];
-    	_newPos = [_position, 25, 50, 1, 0, 60 * (pi / 180), 0] call BIS_fnc_findSafePos;
-		[1, _newPos] call staticHeliCreation;
-        
-    	_markerName = format["marker%1",_i];
-		_marker = createMarker [_markerName, _newPos];
-		_marker setMarkerType "dot";
-		_marker setMarkerSize [1.25, 1.25];
-		_marker setMarkerColor "ColorBlue";
-    };
+diag_log format["WASTELAND SERVER - Heli Markers = %1", _spawnMarkers];
+while {_count <= _numToSpawn} do {
+	_marker = _spawnMarkers call BIS_fnc_selectRandom;
+	_markerUsed = _marker in currentStaticHelis;
+	if (!_markerUsed) then // marker hasn't spawned a heli.
+	{
+		_position = markerPos _marker;
+		[0, _position] call staticHeliCreation;
+		currentStaticHelis set [count currentStaticHelis, _marker];
+		_count = _count + 1;
+	};
 };
-*/
+
+diag_log format["WASTELAND SERVER - %1 Helis Spawned",_count];

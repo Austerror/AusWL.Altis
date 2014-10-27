@@ -1,5 +1,5 @@
 //#define __DEBUG true
-if (playerSide in [INDEPENDENT,sideEnemy]) exitWith {};
+if (playerSide in [BLUFOR,sideEnemy]) exitWith {};
 #define __REFRESH 0.34
 #define __DISTANCE 300
 

@@ -6,7 +6,7 @@
 
 //Creates the markers around general stores.
 {
-	if (["GenStore", str _x] call fn_findString == 0) then
+	if (["GenStore", name _x] call fn_findString == 0) then
 	{
 		_npcPos = getPos _x;
 
@@ -16,7 +16,7 @@
 		_marker = createMarkerLocal [_markerName, _npcPos];
 		_markerName setMarkerShapeLocal "ICON";
 		_markerName setMarkerTypeLocal "mil_dot";
-		_markerName setMarkerColorLocal "ColorOrange";
+		_markerName setMarkerColorLocal "ColorBlue";
 		_markerName setMarkerSizeLocal [1,1];
 		_markerName setMarkerTextLocal "General Store";
 	};

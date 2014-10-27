@@ -67,7 +67,7 @@ if(_cont == 1) then
 		
 	if(_do == 1) then
 	{
-		diag_log "Promote to leader: After the checks";
+		//diag_log "Promote to leader: After the checks";
 		[player] join grpNull;
 		(group _target) selectLeader _target;
 		[player] join (group _target);

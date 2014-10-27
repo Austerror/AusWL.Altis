@@ -38,6 +38,9 @@
 #define CT_MAP 100 
 #define CT_MAP_MAIN 101 
 #define CT_List_N_Box 102 // Arma 2 - N columns list box 
+#define MY_FRAME 103 // Arma 2 - N columns list box 
+#define MY_BUTTON 104 // Arma 2 - N columns list box 
+#define MY_EDIT 105 // Arma 2 - N columns list box 
 
 // Static styles 
 #define ST_POS 0x0F 
@@ -201,7 +204,7 @@ class w_RscListBox
     autoScrollDelay = 5;
     autoScrollRewind = 0;
 
-	class ScrollBar { 
+	class ListScrollBar { 
 		color[] = {1, 1, 1, 0.6}; 
 		colorActive[] = {1, 1, 1, 1}; 
 		colorDisabled[] = {1, 1, 1, 0.3}; 
@@ -430,7 +433,7 @@ class w_RscCombo {
 	arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa";
 	border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa";
 
-	class ScrollBar { 
+	class ComboScrollBar { 
 		color[] = {1, 1, 1, 0.6}; 
 		colorActive[] = {1, 1, 1, 1}; 
 		colorDisabled[] = {1, 1, 1, 0.3}; 
@@ -440,4 +443,3 @@ class w_RscCombo {
 		border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa";
 	};	
 };
-
