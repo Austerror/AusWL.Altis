@@ -58,7 +58,11 @@ if (!isDedicated) then
 {
 	[] spawn
 	{
-		9999 cutText ["Welcome to Austerror Survivor, please wait for your client to initialize", "BLACK", 0.01];
+		if (!isNil "A3W_serverSetupComplete") then {
+			9999 cutText ["Welcome to Austerror Survivor, please wait for your client to initialize", "BLACK", 0.01];
+		} else {
+			9999 cutText ["Welcome to Austerror Survivor, server initialisation may take a few minutes, please be patient", "BLACK", 0.01];
+		};
 		
 		waitUntil {!isNull player};
 		removeAllWeapons player;
