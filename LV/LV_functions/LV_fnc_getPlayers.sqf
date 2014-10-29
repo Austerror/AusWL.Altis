@@ -6,7 +6,7 @@ while{(count _players) == 0}do{
   _all = playableUnits;
   {
     if(isPlayer _x)then{
-      if((alive _x)&&(!captive _x))then{
+      if((alive _x)&&(!captive _x)&&(_x getVariable["isAlive",0] == 1))then{
         _players set[(count _players), _x];
       };
     };
