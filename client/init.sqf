@@ -164,8 +164,8 @@ waituntil {!(IsNull (findDisplay 46))};
 	};
 } forEach playableUnits;
 
-// update player's spawn beacon
-
+// update player's spawn beacon (removed)
+/*
 {
 	if (_x getVariable ["ownerUID",""] == getPlayerUID player) then
 	{
@@ -174,4 +174,4 @@ waituntil {!(IsNull (findDisplay 46))};
 		_x setVariable ["side", playerSide, true];
 	};
 } forEach pvar_spawn_beacons;
-
+*/
