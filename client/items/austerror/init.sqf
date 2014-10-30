@@ -15,6 +15,19 @@ aus_repair_nearest_vehicle = {
     if (count _objects > 0) then {_object = _objects select 0;};
     _object;
 };
+aus_jerrycan_nearest_pump = {
+	_pump_objects = ["Land_FuelStation_Feed_F", "Land_MetalBarrel_F", "Land_fs_feed_F", "Land_Tank_rust_F"];
+    _objects = nearestobjects [player, _pump_objects,  3];
+    _object = objNull;
+    if (count _objects > 0) then {_object = _objects select 0;};
+    _object;
+};
+aus_jerrycan_nearest_vehicle = {
+    _objects = nearestObjects[player, ["LandVehicle", "Air", "Ship"], 5];
+    _object = objNull;
+    if (count _objects > 0) then {_object = _objects select 0;};
+    _object;
+};
 // -------------
 
 _chopwood = [_path, "chopwood.sqf"] call mf_compile;
@@ -35,6 +48,7 @@ _paintvehiclecamopink = [_path, "paintvehiclecamopink.sqf"] call mf_compile;
 _paintvehicledarkblue = [_path, "paintvehicledarkblue.sqf"] call mf_compile;
 _repairvehicle = [_path, "repairvehicle.sqf"] call mf_compile;
 _refuelvehicle = [_path, "refuelvehicle.sqf"] call mf_compile;
+_refilljerrycan = [_path, "refilljerrycan.sqf"] call mf_compile;
 _siphonfuel = [_path, "siphonfuel.sqf"] call mf_compile;
 _ausParachuteOut = ["custom", "parachute.sqf"] call mf_compile;
 _repairtyre = [_path, "repairtyre.sqf"] call mf_compile;
@@ -78,6 +92,7 @@ _packtenticon = "client\icons\repair.paa";
 [MF_ITEMS_SPRAYPAINT_DARKBLUE, "Dark Blue Spray Paint", _paintvehicledarkblue, "sc_spraypaintdarkblue", _painticon, 2] call mf_inventory_create;
 [MF_ITEMS_REPAIRKIT, "Repair Kit", _repairvehicle, "ToolKit", _repairicon, 2] call mf_inventory_create;
 [MF_ITEMS_FUELCANISTER_FULL, "Full Fuel Canister", _refuelvehicle, "sc_fuelcanisterfull", _refuelicon, 2] call mf_inventory_create;
+[MF_ITEMS_FUELCANISTER_EMPTY, "Empty Fuel Canister", _refilljerrycan, "sc_fuelcanisterfull", _refuelicon, 2] call mf_inventory_create;
 [MF_ITEMS_SIPHONHOSE, "Siphon Hose", _siphonfuel, "sc_siphonhose", _siphonicon, 2] call mf_inventory_create;
 [AUS_CUSTOM_PARACHUTEOUT, "Parachute Out", _ausParachuteOut, "sc_siphonhose", _siphonicon, 2] call mf_inventory_create;
 [MF_ITEMS_CARTYRE, "Car Tyre", _repairtyre, "sc_cartyre", _repairtyreicon, 2] call mf_inventory_create;
@@ -102,6 +117,7 @@ mf_can_paintvehiclecamopink = compileFinal preProcessFileLineNumbers format["%1\
 mf_can_paintvehicledarkblue = compileFinal preProcessFileLineNumbers format["%1\can_paintvehicledarkblue.sqf", _path];	// Variable name for script that checks if actions is possible.
 mf_can_repairvehicle = compileFinal preProcessFileLineNumbers format["%1\can_repairvehicle.sqf", _path];	// Variable name for script that checks if actions is possible.
 mf_can_refuelvehicle = compileFinal preProcessFileLineNumbers format["%1\can_refuelvehicle.sqf", _path];	// Variable name for script that checks if actions is possible.
+mf_can_refilljerrycan = compileFinal preProcessFileLineNumbers format["%1\can_refilljerrycan.sqf", _path];	// Variable name for script that checks if actions is possible.
 mf_can_siphonfuel = compileFinal preProcessFileLineNumbers format["%1\can_siphonfuel.sqf", _path];	// Variable name for script that checks if actions is possible.
 mf_can_fillcanteen = compileFinal preProcessFileLineNumbers format["%1\can_fillcanteen.sqf", _path];	// Variable name for script that checks if actions is possible.
 aus_canParachute = compileFinal preProcessFileLineNumbers format["%1\canParachute.sqf", "custom"];	// Variable name for script that checks if actions is possible.
@@ -294,6 +310,13 @@ _condition21 = format["[] call %1 == ''", mf_can_packtent];						// Check if act
 _action21 = [_label21, _execute21, [], 1, false, false, "", _condition21];					// Setup call (Label, Action Script, Some Array?, Some Number?, Boolean, Boolean, String, Check Script)
 ["pack-tent", _action21] call mf_player_actions_set;
 
+// Setting up refill jerrycan action.
+private ["_label22", "_execute22", "_condition22", "_action22"];
+_label22 = format["<img image='%1'/> Fill Jerry Can", _refuelicon];
+_execute22 = {MF_ITEMS_FUELCANISTER_EMPTY call mf_inventory_use};
+_condition22 = format["[] call %1 == ''", mf_can_refilljerrycan];
+_action22 = [_label22, _execute22, [], 1, false, false, "", _condition22];
+["jerrycan-refill", _action22] call mf_player_actions_set;
 /*
 // Setting up rename tent.
 private ["_label21", "_execute21", "_condition21", "_action21"];

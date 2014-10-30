@@ -13,13 +13,6 @@
 #define ERR_NO_SYPHON "You don't have a syphon hose"
 #define ERR_VEHICLE_LOCKED "Vehicle is locked/disabled"
 
-aus_jerrycan_nearest_vehicle = {
-    _objects = nearestObjects[player, ["LandVehicle", "Air", "Ship"], 5];
-    _object = objNull;
-    if (count _objects > 0) then {_object = _objects select 0;};
-    _object;
-};
-
 private ["_vehicle", "_error"];
 _vehicle = objNull;
 if (count _this == 0) then { // if array empty
