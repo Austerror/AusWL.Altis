@@ -13,6 +13,7 @@
 #define ERR_NO_SYPHON "You don't have a syphon hose"
 #define ERR_VEHICLE_LOCKED "Vehicle is locked/disabled"
 #define ITEM_COUNT(ITEMID) ITEMID call mf_inventory_count
+
 private ["_vehicle", "_error"];
 _vehicle = objNull;
 if (count _this == 0) then { // if array empty
