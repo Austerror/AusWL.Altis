@@ -7,3 +7,5 @@ survivors and bandits.
 Many new items added. All Wasteland items removed for actual real inventory items.
 
 Feature List: (to be completed).
+
+Required @Mod downloads and links at http://austerror.dyndns.org/files/
