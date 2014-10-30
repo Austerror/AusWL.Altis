@@ -1,1 +1,0 @@
-NMIB_ModuleGhost setObjectTexture [0,(format['#(argb,8,8,3)color(%1,%2,%3,%4)',(NMIB_State select 0),(NMIB_State select 1),(NMIB_State select 2),(NMIB_State select 3)])];
